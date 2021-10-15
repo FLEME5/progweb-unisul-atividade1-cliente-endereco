@@ -1,10 +1,24 @@
 package br.unisul.aula.modelo;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.TableGenerator;
+
+@Entity
+@TableGenerator(name = "seq_cliente", initialValue = 0, allocationSize = 1)
 public class Cliente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_cliente")
     private Long id;
     private String nome;
     private String complemento;
     private Integer numero;
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     public Cliente() {

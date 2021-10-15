@@ -1,11 +1,24 @@
 package br.unisul.aula.modelo;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.TableGenerator;
+
+@Entity
+@TableGenerator(name = "seq_endereco", initialValue = 0, allocationSize = 1)
 public class Endereco {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seq_endereco")
     private Long id;
     private String logradouro;
     private Integer cep;
     private String bairro;
     private String cidade;
+    @Enumerated(EnumType.STRING)
     private UnidadeFederativa uf;
 
     public Endereco() {
