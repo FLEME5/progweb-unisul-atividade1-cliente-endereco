@@ -117,6 +117,29 @@ public class ClienteServlet extends HttpServlet {
             e.printStackTrace();
             response.getWriter().println("Falha ao buscar usuário devido exceção");
         }
-
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json;charset=utf-8");
+
+        try {
+            String param = request.getParameter("id");
+            Banco<Cliente> banco = new ClienteImpl();
+            
+            ((ClienteImpl) banco).deleteById(Long.parseLong(param));
+            response.getWriter().println("{\"Mensagem\":\"OK\"}");
+        
+        } catch (EntityNotFoundException e) {
+            
+            response.getWriter().println("Nenhum usuário encontrado com este ID!");
+        } catch (NumberFormatException e) {
+            
+            response.getWriter().println("ID Inválido, digite um número!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Falha ao buscar usuário devido exceção");
+        } 
+    }
+
 }

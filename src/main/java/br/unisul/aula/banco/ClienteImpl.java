@@ -45,4 +45,12 @@ public class ClienteImpl implements Banco<Cliente> {
         EntityManager entityManager = JPAUtil.getEntityManager();
         return entityManager.getReference(Cliente.class, id);
     }
+
+    public void deleteById(Long id) {
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        Cliente cliente = entityManager.getReference(Cliente.class, id);
+        entityManager.getTransaction().begin();
+        entityManager.remove(cliente);
+        entityManager.getTransaction().commit();
+    }
 }
