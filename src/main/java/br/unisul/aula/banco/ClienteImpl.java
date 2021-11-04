@@ -5,6 +5,7 @@ import br.unisul.aula.modelo.Cliente;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 public class ClienteImpl implements Banco<Cliente> {
     @Override
@@ -52,5 +53,14 @@ public class ClienteImpl implements Banco<Cliente> {
         entityManager.getTransaction().begin();
         entityManager.remove(cliente);
         entityManager.getTransaction().commit();
+    }
+
+    
+    public List<Cliente> findByCidade(String cidade){
+        EntityManager entityManager = JPAUtil.getEntityManager();
+        TypedQuery<Cliente> query =
+                entityManager.createQuery("SELECT c FROM Cliente c where c.endereco.cidade = :cidade",
+                        Cliente.class);
+        return query.setParameter("cidade", cidade).getResultList();
     }
 }

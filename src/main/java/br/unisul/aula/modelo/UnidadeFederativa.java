@@ -27,5 +27,6 @@ public enum UnidadeFederativa {
     MS,
     MT,
     GO,
-    DF
+    DF,
+    NotFound
 }

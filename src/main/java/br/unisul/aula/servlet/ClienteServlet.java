@@ -18,10 +18,12 @@ import br.unisul.aula.banco.Banco;
 import br.unisul.aula.banco.ClienteImpl;
 import br.unisul.aula.banco.EnderecoImpl;
 import br.unisul.aula.dto.ClienteDTO;
+import br.unisul.aula.dto.ClientesCidadeDTO;
 import br.unisul.aula.modelo.Cliente;
 import br.unisul.aula.modelo.Endereco;
+import br.unisul.aula.modelo.UnidadeFederativa;
 
-@WebServlet(name = "ClienteServlet", urlPatterns={"/Clientes", "/Cliente/*"} )
+@WebServlet(name = "ClienteServlet", urlPatterns={"/Clientes", "/Cliente/*", "/ClientesCidade/*"} )
 public class ClienteServlet extends HttpServlet {
 
     @Override
@@ -61,6 +63,31 @@ public class ClienteServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 
                 response.getWriter().println("ID Inválido, digite um número!");
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.getWriter().println("Falha ao buscar usuário devido exceção");
+            }
+        } else if (path.equals("ClientesCidade")) {
+
+            try {
+                String param = request.getParameter("cidade");
+                Banco<Cliente> banco = new ClienteImpl();
+                List<Cliente> clienteList = ((ClienteImpl) banco).findByCidade(param);
+                List<ClienteDTO> dtos = new ArrayList<>();
+                UnidadeFederativa cidadeUf = UnidadeFederativa.NotFound;
+                if (clienteList.size() > 0) {
+                    cidadeUf = clienteList.get(0).getEndereco().getUf();
+                }
+                for (int i = 0; i < clienteList.size(); i++) {
+                    ClienteDTO dto = new ClienteDTO();
+                    dto.clientesCidade(clienteList.get(i));
+                    dtos.add(dto);
+                }
+                ClientesCidadeDTO cdto = new ClientesCidadeDTO(param, cidadeUf, dtos);
+                Gson gson = new Gson();
+                String clienteJson = gson.toJson(cdto);
+                response.getWriter().println(clienteJson);
+            
             } catch (Exception e) {
                 e.printStackTrace();
                 response.getWriter().println("Falha ao buscar usuário devido exceção");

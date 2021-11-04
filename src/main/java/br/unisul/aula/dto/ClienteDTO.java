@@ -70,4 +70,10 @@ public class ClienteDTO {
         return cliente;
     }
 
+    public ClienteDTO clientesCidade (Cliente cliente) {
+        ClienteDTO clienteCidade = new ClienteDTO();
+        this.idCliente = cliente.getId();
+        this.nome = cliente.getNome();
+        return clienteCidade;
+    }
 }
